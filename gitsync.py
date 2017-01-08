@@ -15,7 +15,6 @@ def update_config(configs):
     for config in configs:
         for setting in configs[config]:
             if setting == 'path':
-                print(configs[config]['path'])
                 configs[config]['path'] = os.path.expanduser(configs[config]['path'])
     return configs
 
