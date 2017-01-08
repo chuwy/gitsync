@@ -59,6 +59,11 @@ def new_files(path):
         return False
 
 
+def unpushed_commits(path):
+    with chdir(path):
+        return len(call('git cherry').stdout.readlines()) > 0
+
+
 def commit(conf):
     message = "'Automatic commit via gitsync from %s at %s'" % (COMPUTER, NOW,)
     call('git add -u')
@@ -76,9 +81,12 @@ def push(conf):
 
 def sync(conf):
     """Index added files, commit and push"""
-    if new_files(conf['path']):
-        with chdir(conf['path']):
+    with chdir(conf['path']):
+        if new_files(conf['path']):
             commit(conf)
+        else:
+            print("No new files")
+        if unpushed_commits(conf['path']):
             result = push(conf)
             retval = result.wait()
             if retval != 0:
@@ -87,8 +95,8 @@ def sync(conf):
                     # TODO: notify about error
                     print(result.stderr)
                     sys.exit(retval)
-    else:
-        print("No new files")
+        else:
+            print("No unpushed commits")
 
 
 NOW = str(datetime.now())
