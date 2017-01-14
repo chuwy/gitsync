@@ -108,7 +108,7 @@ CONFIG = load_config()
 
 if __name__ == "__main__":
     for k, v in CONFIG.items():
-        print('*' * 90)
+        print('*' * 87)
         print(' ' * 29 + "* SYNCING %s *" % k)
         sync(v)
-        print('*' * 90)
+        print('*' * 87)
