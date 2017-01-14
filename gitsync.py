@@ -65,7 +65,10 @@ def unpushed_commits(path):
 
 def commit(conf):
     message = "'Automatic commit via gitsync from %s at %s'" % (COMPUTER, NOW,)
-    call('git add -u')
+    if conf['add'] == 'ALL':
+        call('git add -A')
+    else:
+        call('git add -u')
     commit_result = call('git commit --message %s' % message)
     for line in commit_result.stdout.readlines():
         print(line, end='')
@@ -81,7 +84,7 @@ def push(conf):
 def sync(conf):
     """Index added files, commit and push"""
     with chdir(conf['path']):
-        if new_files(conf['path']):
+        if new_files(conf['path']) or conf['add'] == 'ALL':
             commit(conf)
         else:
             print("No new files")
