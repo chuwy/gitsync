@@ -102,11 +102,13 @@ def sync(conf):
 
 
 NOW = str(datetime.now())
-COMPUTER = call('uname -n').stdout.readlines()[0]
+COMPUTER = call('uname -n').stdout.readlines()[0].strip()
 CONFIG = load_config()
 
 
 if __name__ == "__main__":
     for k, v in CONFIG.items():
-        print("Syncing %s" % k)
+        print('*' * 90)
+        print(' ' * 29 + "* SYNCING %s *" % k)
         sync(v)
+        print('*' * 90)
